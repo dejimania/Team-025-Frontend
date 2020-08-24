@@ -1,7 +1,40 @@
 {
-  "name": "team",
+  "name": "team-025-frontend",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "A boilerplate for starting js code",
+  "keywords": [
+    "js-starter",
+    "boilerplate"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "test": "__tests__"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:ol": "jest",
+    "test:watch": "jest --watch",
+    "test:cover": "jest --coverage",
+    "lint": "eslint \"src/**/*.js\"",
+    "eject": "react-scripts eject"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Build For SDG",
+    "email": "buildforsdg@andela.com"
+  },
+  "homepage": "https://github.com/BuildForSDG/js-starter#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuildForSDG/js-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BuildForSDG/js-starter/issues"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -10,11 +43,14 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/preset-env": "^7.9.5",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "parcel-bundler": "^1.12.4"
   },
   "eslintConfig": {
     "extends": "react-app"
