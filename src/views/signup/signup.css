@@ -1,0 +1,19 @@
+.signup-container {
+	margin-top: 72px;
+}
+
+.signup-box {
+	max-width: 400px;
+	padding-bottom: 3rem;
+}
+
+.signup-red-box {
+	background: #f2709c; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #f2709c, #ff9472); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #f2709c, #ff9472); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.illustration {
+	max-width: 300px;
+}
+
