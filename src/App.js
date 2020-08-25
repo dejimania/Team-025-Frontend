@@ -1,10 +1,14 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Routes from "./routes";
+import { DefaultLayout } from "./layouts";
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to Team-025-Frontend react app</h1>
+      <DefaultLayout>
+        <Routes />
+      </DefaultLayout>
     </div>
   );
 }
