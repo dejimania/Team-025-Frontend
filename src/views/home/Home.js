@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { LandingBenefits, LandingPartners, LandingHero } from '../../components';
 
 const Home = () => {
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
+
 	return (
 		<div style={{marginTop: '72px', minHeight: '600px'}}>
-			<h1>Welcome to Team-025-Frontend react app</h1>
+      <LandingHero/>
+      <LandingPartners/>
+      <LandingBenefits/>
 		</div>
 	)
 }

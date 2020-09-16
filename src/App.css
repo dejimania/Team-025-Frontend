@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,11 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+.ruler {
+  width: 200px;
+  height: 0.5rem;
+  background-color: coral;
+  margin: auto;
 }

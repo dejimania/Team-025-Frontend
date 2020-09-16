@@ -3,9 +3,9 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
-import "./signup.css";
+import "../signup/signup.css";
 
-const SignUp = () => {
+const ConfirmRegistration = () => {
 
   useEffect(() => {
     window.scrollTo(0,0)
@@ -20,40 +20,31 @@ const SignUp = () => {
               <img src={logo} alt="bloodnation logo" className="img-fluid mb-5"/>
             </Link>
             <h2 className="display-4">
-              Sign up to <br />
-              BloodNation
+              Confirm <br />
+              Registration
             </h2>
-            <p className="text-danger">Follow the easy step to get started with bloodnation</p>
+            <p className="text-danger">Please check your email to click the confirmation link to get started with bloodnation</p>
+            <h5>
+              Didn't get confirmation link?
+            </h5>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Control type="email" placeholder="Enter email" className="pt-4 pb-4" />
               </Form.Group>
 
-              <Form.Group controlId="formBasicPassword">
-                <Form.Control type="password" placeholder="Password" className="pt-4 pb-4" />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicComfirmPassword">
-                <Form.Control type="password" placeholder="Confirm Password" className="pt-4 pb-4" />
-              </Form.Group>
-
               <Button variant="danger" type="submit" className="mb-3 pt-2 pb-2" block>
-                Create Account
+                Resend Link
               </Button>
-              <p className="text-center">Or Sign up with an email</p>
+              <p className="text-center">Or Sign in with social media</p>
               <Button variant="outline-danger" className="pt-2 pb-2" block>
-                Sign up with Google
+                Sign in with Google
               </Button>
               <Button variant="outline-danger" className="mb-3 pt-2 pb-2" block>
-                Sign up with Facebook
+                Sign in with Facebook
               </Button>
-              <p>
-                By signing up, i agree to the BloodNation Privacy Policy
-                <br /> and Terms of Servcie
-              </p>
             </Form>
             <h5>
-              Have an account? <NavLink to="/signin"> Sign in</NavLink>
+              Don't have an account? <NavLink to="/signup"> Sign Up</NavLink>
             </h5>
           </div>
         </Col>
@@ -62,16 +53,17 @@ const SignUp = () => {
           <div className="signupbox two d-none d-md-block"></div>
           <div className="signupbox five"></div>
           <div className="signupbox six"></div>
-          <div className="signup-illustration-signupbox my-auto mx-auto pt-3 pb-5">
+          <div className="signup-illustration-box my-auto mx-auto pt-3 pb-5">
             <h1 className="display-4 mt-4 mb-3">
-              Register to be a<br /> Blood Donor
+              Confirm Registration <br /> to start
+              Donating
             </h1>
             <img src={illustration} className="img-fluid illustration mb-3" alt="sign up" />
             <p className="mb-4 text-white">Give blood, do something amazing and save lives</p>
             <hr className="border" />
-            <h5 className="mt-4">Have an account?</h5>
-            <Button variant="light" as={NavLink} to="/signin" className="mb-3 pt-2 pb-2" block>
-              Sign In
+            <h5 className="mt-4">Dont have an account?</h5>
+            <Button variant="light" as={NavLink} to="/signup" className="mb-3 pt-2 pb-2" block>
+              Sign Up
             </Button>
           </div>
         </Col>
@@ -80,4 +72,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ConfirmRegistration;

@@ -27,7 +27,8 @@ img {
 p {
  font-size:16px;
  line-height:30px;
- color:#898b96;
+ /* color:#898b96; */
+ color: white;
  font-weight:300
 }
 h4 {
@@ -35,10 +36,12 @@ h4 {
  margin:0;
  font-weight:400;
  padding:0;
- color:#363940
+ /* color:#363940; */
+ color: white;
 }
 a {
- color:#5867dd
+ /* color:#5867dd; */
+ color: white;
 }
 .no-padding {
  padding:0!important
@@ -71,10 +74,13 @@ a {
  margin-bottom:40px
 }
 .footer--light {
- background:#e7e8ed
+ /* background:#e7e8ed; */
+ background:#dc3545!important;
+ color: white;
 }
 .footer-big .footer-menu ul li a,.footer-big p,.footer-big ul li {
- color:#898b96
+ /* color:#898b96; */
+ color: white;
 }
 .footer-menu {
  padding-left:48px
@@ -87,7 +93,8 @@ a {
  transition:.3s
 }
 .footer-menu ul li a:hover {
- color:#5867dd
+ /* color:#5867dd */
+ color: yellow;
 }
 .footer-menu--1 {
  width:100%

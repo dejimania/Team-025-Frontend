@@ -5,8 +5,10 @@ const DefaultLayout = ({children}) => {
 	return (
 		<div>
 			<NavBar/>
-			{children}
-			<Footer/>
+			<div style={{minHeight: '700px'}}>
+        {children}
+      </div>
+      <Footer/>
 		</div>
 	)
 }
