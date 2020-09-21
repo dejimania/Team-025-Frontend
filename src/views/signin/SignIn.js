@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row, Alert } from "react-bootstrap";
 import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "../signup/signup.css";
+import { AUTH_FETCH, AUTH_RESOLVED } from "../../store/types/authTypes";
+import { serverRequest } from "../../utils/serverRequest";
 
 const SignIn = () => {
 
@@ -13,23 +16,37 @@ const SignIn = () => {
   const { register, handleSubmit } = useForm();
 
   const { push } = useHistory();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(state => state.auth)
 
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
+    window.scrollTo(0,0);
+    if(isAuthenticated){
+      push('/dashboard');
+    }
+  }, [isAuthenticated, push])
 
-  const onSubmit = data => {
-    setIsSubmitting(true);
+  const onSubmit = async data => {
+    try {
+      setIsSubmitting(true);
+      dispatch({type: AUTH_FETCH})
+      const endpoint = `${process.env.REACT_APP_API}/login`;
 
-    setTimeout(() => {
-      if(data.email === 'admin@bloodnation.com' && data.password === 'password'){
+      const response = await serverRequest().post(endpoint, data);
+      if(response.data && response.data.data && response.data.accessToken ){
+        dispatch({type: AUTH_RESOLVED, payload: {
+          user: response.data.data,
+          token: response.data.accessToken
+        }})
         push('/dashboard');
+      } else {
+        setError("invalid credentials");
+        setIsSubmitting(false);
       }
-      console.log(data)
-      setError('invalid credentials')
+    } catch (error) {
+      setError("invalid credentials");
       setIsSubmitting(false);
-    },2000);
-
+    }
   };
 
   return (
@@ -45,7 +62,6 @@ const SignIn = () => {
               BloodNation
             </h2>
             <p className="text-danger">Follow the easy step to get started with bloodnation</p>
-            <small>Test with: admin@bloodnation.com, password</small>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group controlId="formBasicEmail">

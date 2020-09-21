@@ -26,7 +26,7 @@ const LandingHero = () => {
                 </div>
             </Col>
             <Col sm="12" md="7">
-              <img src={img} alt="doctors"/>
+              <img src={img} alt="doctors" className="img-fluid"/>
             </Col>
           </Row>
         </Container>

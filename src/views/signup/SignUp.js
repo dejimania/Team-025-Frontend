@@ -1,15 +1,53 @@
-import React, { useEffect } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Form, Row, Alert } from "react-bootstrap";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from "react-hook-form";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "./signup.css";
+import { serverRequest } from "../../utils/serverRequest";
+import { AUTH_FETCH, AUTH_RESOLVED } from "../../store/types/authTypes";
 
 const SignUp = () => {
 
+  const { isAuthenticated } = useSelector(state => state.auth)
+  const { push } = useHistory();
+  const dispatch = useDispatch();
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState()
+  const { register, handleSubmit, watch, errors } = useForm();
+
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
+    window.scrollTo(0,0);
+    if(isAuthenticated){
+      push('/dashboard');
+    }
+  }, [isAuthenticated, push])
+
+  const onSubmit = async data => {
+    try {
+      setIsSubmitting(true);
+      dispatch({type: AUTH_FETCH})
+      const endpoint = `${process.env.REACT_APP_API}/signup`;
+
+      const response = await serverRequest().post(endpoint, data);
+      if(response.data && response.data.data && response.data.accessToken ){
+        dispatch({type: AUTH_RESOLVED, payload: {
+          user: response.data.data,
+          token: response.data.accessToken
+        }})
+        push('/dashboard');
+      } else {
+        setError("invalid credentials");
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      setError("invalid credentials");
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Container fluid className="h-100 auth-container">
@@ -24,22 +62,28 @@ const SignUp = () => {
               BloodNation
             </h2>
             <p className="text-danger">Follow the easy step to get started with bloodnation</p>
-            <Form>
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Control type="email" placeholder="Enter email" className="pt-4 pb-4" />
+                <Form.Control type="email" placeholder="Enter email" name="email" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
-                <Form.Control type="password" placeholder="Password" className="pt-4 pb-4" />
+                <Form.Control type="password" name="password" ref={register({ required: true })} placeholder="Password" className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group controlId="formBasicComfirmPassword">
-                <Form.Control type="password" placeholder="Confirm Password" className="pt-4 pb-4" />
+                <Form.Control type="password" name="confirmpassword" ref={register({ required: true, validate: (value) => value === watch('password') })} placeholder="Confirm Password" className="pt-4 pb-4" />
+                {errors.confirmpassword && <Form.Text className="text-danger" muted>Password do not match</Form.Text>}
               </Form.Group>
 
-              <Button variant="danger" type="submit" className="mb-3 pt-2 pb-2" block>
-                Create Account
+              <Button variant="danger" type="submit" disabled={isSubmitting} className="mb-3 pt-2 pb-2" block>
+                {isSubmitting?'Loading...':'Create Account'}
               </Button>
+              {error?(
+                <Alert variant='warning' className="text-center">
+                  {error}
+                </Alert>
+              ):null}
               <p className="text-center">Or Sign up with an email</p>
               <Button variant="outline-danger" className="pt-2 pb-2" block>
                 Sign up with Google

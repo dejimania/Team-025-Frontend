@@ -1,0 +1,16 @@
+.topbar {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.topbar .dropdown-menu {
+  left: -100px;
+}
+
+.topbar a {
+  color: black;
+}
+
+.topbar a:hover {
+  color: coral;
+}

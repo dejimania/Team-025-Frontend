@@ -1,12 +1,13 @@
-import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes'; 
- 
+import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes';
+
  const initialState = {
 	 isLoading: false,
 	 isAuthenticated: false,
-	 token: null,
+   token: null,
+   role: null,
 	 user: null
  }
- 
+
  const authReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case AUTH_FETCH:
@@ -17,15 +18,19 @@ import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes';
 		case AUTH_RESOLVED:
 			return {
 				...state,
-				isLoading: false,
+        isLoading: false,
+        isAuthenticated: true,
 				token: action.payload.token,
-				user: action.payload.user
+        user: action.payload.user,
+        role: action.payload.role
 			};
 		case AUTH_CANCELED:
 			return {
 				...state,
 				isLoading: false,
-				token: null,
+        token: null,
+        role: null,
+        isAuthenticated: false,
 				user: null
 			};
 		default:
