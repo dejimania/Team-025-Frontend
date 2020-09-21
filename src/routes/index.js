@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import PublicRoutes from './PublicRoutes'
+import PrivateRoutes from './PrivateRoutes';
 import { Spinner } from 'react-bootstrap'
 import { Switch } from 'react-router-dom'
 import { SignUp } from '../views/signup'
@@ -9,6 +10,8 @@ import { SignIn } from '../views/signin'
 import { ConfirmRegistration } from '../views/confirmregistration'
 import { Verification } from '../views/verification'
 import { Dashboard } from '../views/dashboard'
+import UserLayout from '../layouts/UserLayout';
+import { LogOut } from '../views/logout';
 
 const Routes = () => {
 	return (
@@ -19,7 +22,8 @@ const Routes = () => {
 				<PublicRoutes exact={true} layout={AuthLayout} path="/confirmregistration" component={ConfirmRegistration}/>
 				<PublicRoutes exact={true} layout={AuthLayout} path="/verification/:code" component={Verification}/>
 				<PublicRoutes exact={true} layout={DefaultLayout} path="/" component={Home}/>
-				<PublicRoutes exact={true} layout={DefaultLayout} path="/dashboard" component={Dashboard}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/dashboard" component={Dashboard}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/logout" component={LogOut}/>
 			</Switch>
 		</Suspense>
 	)
