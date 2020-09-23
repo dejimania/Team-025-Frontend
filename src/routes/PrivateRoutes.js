@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 
 const PrivateRoutes = ({ component: Component, layout:Layout, ...rest }) => {
 
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user, role } = useSelector(state => state.auth);
 
 	const toRender = (props) =>{
     return(
       <>
-      {isAuthenticated && user && user.role === 'donor'?(
+      {isAuthenticated && user && role === 'donor'?(
         <Layout>
           <Component {...props}/>
         </Layout>

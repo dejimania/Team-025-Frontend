@@ -33,11 +33,8 @@ const SignIn = () => {
       const endpoint = `${process.env.REACT_APP_API}/login`;
 
       const response = await serverRequest().post(endpoint, data);
-      if(response.data && response.data.data && response.data.accessToken ){
-        dispatch({type: AUTH_RESOLVED, payload: {
-          user: response.data.data,
-          token: response.data.accessToken
-        }})
+      if(response.data.status === 'success' ){
+        dispatch({type: AUTH_RESOLVED, payload: response.data.data })
         push('/dashboard');
       } else {
         setError("invalid credentials");

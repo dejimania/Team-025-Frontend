@@ -20,8 +20,8 @@ import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes';
 				...state,
         isLoading: false,
         isAuthenticated: true,
-				token: action.payload.token,
-        user: action.payload.user,
+				token: action.payload.accessToken,
+        user: action.payload,
         role: action.payload.role
 			};
 		case AUTH_CANCELED:
