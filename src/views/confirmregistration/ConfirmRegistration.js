@@ -1,15 +1,39 @@
-import React, { useEffect } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Form, Row, Alert } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "../signup/signup.css";
+import { serverRequest } from "../../utils/serverRequest";
 
 const ConfirmRegistration = () => {
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState()
+  const [success, setSuccess] = useState(false)
+
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     window.scrollTo(0,0)
   }, [])
+
+  const onSubmit = async data => {
+    try {
+      setIsSubmitting(true);
+      const endpoint = `${process.env.REACT_APP_API}/verification/email/resend`;
+
+      const response = await serverRequest().post(endpoint, data);
+      if(response.data.status === 'success' ){
+        setSuccess(true)
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      setError("invalid credentials");
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Container fluid className="h-100 auth-container">
@@ -27,21 +51,24 @@ const ConfirmRegistration = () => {
             <h5>
               Didn't get confirmation link?
             </h5>
-            <Form>
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Control type="email" placeholder="Enter email" className="pt-4 pb-4" />
+                <Form.Control type="email" placeholder="Enter email" name="email" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
-              <Button variant="danger" type="submit" className="mb-3 pt-2 pb-2" block>
-                Resend Link
+              <Button variant="danger" type="submit" disabled={isSubmitting} className="mb-3 pt-2 pb-2" block>
+                {isSubmitting?'Loading...':'ReSend Link'}
               </Button>
-              <p className="text-center">Or Sign in with social media</p>
-              <Button variant="outline-danger" className="pt-2 pb-2" block>
-                Sign in with Google
-              </Button>
-              <Button variant="outline-danger" className="mb-3 pt-2 pb-2" block>
-                Sign in with Facebook
-              </Button>
+              {error?(
+                <Alert variant='warning' className="text-center">
+                  {error}
+                </Alert>
+              ):null}
+              {success?(
+                <Alert variant='info' className="text-center">
+                  Link sent successfully. Please check your inbox or span to confirm your registration
+                </Alert>
+              ):null}
             </Form>
             <h5>
               Don't have an account? <NavLink to="/signup"> Sign Up</NavLink>

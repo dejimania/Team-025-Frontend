@@ -8,6 +8,7 @@ import {
   buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { Link } from "react-router-dom";
 
 // Animation
 // import { easeQuadInOut } from "d3-ease";
@@ -27,7 +28,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1 className="display-4">Dashboard</h1>
+      <h1 className="display-4 mb-4">Dashboard</h1>
       <Row>
         <Col xs="12" md="4">
           <Card className="statistics-box blood-group bg-danger text-white text-center">
@@ -43,7 +44,7 @@ const Dashboard = () => {
         <Col xs="12" md="4">
           <Card className="statistics-box donation text-center text-danger">
             <Card.Body className="d-flex justify-content-around">
-              <Button variant="outline-danger" className="p-3 w-50 mr-4 text-center">
+              <Button variant="outline-danger" as={Link} to="/appointments/book" className="p-3 w-50 mr-4 text-center">
                 <GiWaterDrop className="my-auto mx-auto" size="6rem"/><br/>
                 DONATE NOW
               </Button>
@@ -76,9 +77,9 @@ const Dashboard = () => {
       </Row>
       <Row>
         <Col className="mt-5">
-          <h4>Donation History</h4>
           <Card>
             <Card.Body>
+              <h6 className="mb-3">Donation History</h6>
               <Table striped bordered hover>
                 <thead>
                   <tr>

@@ -1,4 +1,4 @@
-import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes';
+import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED, AUTH_PROFILE_RESOLVED } from '../types/authTypes';
 
  const initialState = {
 	 isLoading: false,
@@ -23,7 +23,13 @@ import { AUTH_FETCH, AUTH_RESOLVED, AUTH_CANCELED } from '../types/authTypes';
 				token: action.payload.accessToken,
         user: action.payload,
         role: action.payload.role
-			};
+      };
+    case AUTH_PROFILE_RESOLVED:
+      return {
+        ...state,
+        isLoading: false,
+        user: { ...state.user, ...action.payload }
+      };
 		case AUTH_CANCELED:
 			return {
 				...state,

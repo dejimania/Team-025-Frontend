@@ -7,7 +7,7 @@ import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "./signup.css";
 import { serverRequest } from "../../utils/serverRequest";
-import { AUTH_FETCH, AUTH_RESOLVED } from "../../store/types/authTypes";
+import { AUTH_FETCH } from "../../store/types/authTypes";
 
 const SignUp = () => {
 
@@ -17,6 +17,7 @@ const SignUp = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState()
+  const [success, setSuccess] = useState(false)
   const { register, handleSubmit, watch, errors } = useForm();
 
   useEffect(() => {
@@ -29,22 +30,21 @@ const SignUp = () => {
   const onSubmit = async data => {
     try {
       setIsSubmitting(true);
+      setError('');
       dispatch({type: AUTH_FETCH})
       const endpoint = `${process.env.REACT_APP_API}/signup`;
 
       const response = await serverRequest().post(endpoint, data);
-      if(response.data && response.data.data && response.data.accessToken ){
-        dispatch({type: AUTH_RESOLVED, payload: {
-          user: response.data.data,
-          token: response.data.accessToken
-        }})
-        push('/dashboard');
+      if(response.data.status === 'success'){
+        setSuccess(true)
+        setIsSubmitting(false);
       } else {
-        setError("invalid credentials");
+        setError("registration error");
         setIsSubmitting(false);
       }
     } catch (error) {
-      setError("invalid credentials");
+      const err = error.response.data.message || error.response.data.data;
+      setError(err);
       setIsSubmitting(false);
     }
   };
@@ -82,6 +82,11 @@ const SignUp = () => {
               {error?(
                 <Alert variant='warning' className="text-center">
                   {error}
+                </Alert>
+              ):null}
+              {success?(
+                <Alert variant='info' className="text-center">
+                  Congratulation, Your registration was successful. Please check your inbox or span to confirm your registration
                 </Alert>
               ):null}
               <p className="text-center">Or Sign up with an email</p>
