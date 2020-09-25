@@ -1,18 +1,67 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react'
+import { Button, Col, Container, Form, Row, Alert, Spinner } from "react-bootstrap";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "../signup/signup.css";
+import { serverRequest } from '../../utils/serverRequest';
 
 const Verification = () => {
 
-  const [verification] = useState(false);
+  const verification = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setIsLoading] = useState(true)
+  const [error, setError] = useState()
+  const [success, setSuccess] = useState(false)
+
+  const { search } = useLocation();
+  const params = new URLSearchParams(search)
+  const token = params.get('token');
+  const email = params.get('email');
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    window.scrollTo(0,0)
-  }, [])
+    window.scrollTo(0,0);
 
+    const verify = async () => {
+      try {
+        const data = {
+          email, token
+        }
+        const endpoint = `${process.env.REACT_APP_API}/verification/email`;
+        const response = await serverRequest().post(endpoint, data);
+        if(response.data.status === 'success' ){
+          verification.current = true;
+          setIsLoading(false)
+        }
+      } catch (error) {
+        verification.current = false;
+        setIsLoading(false)
+      }
+    };
+
+    verify()
+
+  }, [verification, email, token])
+
+  const onSubmit = async data => {
+    try {
+      setIsSubmitting(true);
+      const endpoint = `${process.env.REACT_APP_API}/verification/email/resend`;
+
+      const response = await serverRequest().post(endpoint, data);
+      if(response.data.status === 'success' ){
+        setSuccess(true)
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+      setIsSubmitting(false);
+    }
+  };
+
+  if(loading) return <Spinner/>
   return (
     <Container fluid className="h-100 auth-container">
       <Row className="h-100">
@@ -21,14 +70,15 @@ const Verification = () => {
             <Link to="/">
               <img src={logo} alt="bloodnation logo" className="img-fluid mb-5"/>
             </Link>
-            {verification?(
+
+            {verification.current?(
               <>
                 <h2 className="display-4">
                   Verification<br />
                   Successful
                 </h2>
                 <p className="text-danger">Congratulation, your account have been verified and you can start donating.</p>
-                <Button variant="outline-danger" as={Link} to="/signin" className="pt-2 pb-2" block>
+                <Button variant="outline-danger" as={Link} to="/signin" className="pt-2 pb-2 mb-3" block>
                   Sign in
                 </Button>
               </>
@@ -39,22 +89,27 @@ const Verification = () => {
                   Failed
                 </h2>
                 <p className="text-danger">Sorry, your account could not be verified. Link must have expired.</p>
-                <Form>
+                <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group controlId="formBasicEmail">
-                    <Form.Control type="email" placeholder="Enter email" className="pt-4 pb-4" />
+                    <Form.Control type="email" defaultValue={email} placeholder="Enter email" name="email" ref={register({ required: true })} className="pt-4 pb-4" />
                   </Form.Group>
 
-                  <Button variant="danger" type="submit" className="mb-3 pt-2 pb-2" block>
-                    Resend Link
+                  <Button variant="danger" type="submit" disabled={isSubmitting} className="mb-3 pt-2 pb-2" block>
+                    {isSubmitting?'Loading...':'ReSend Link'}
                   </Button>
+                  {error?(
+                    <Alert variant='warning' className="text-center">
+                      {error}
+                    </Alert>
+                  ):null}
+                  {success?(
+                    <Alert variant='info' className="text-center">
+                      Link sent successfully. Please check your inbox or span to confirm your registration
+                    </Alert>
+                  ):null}
                 </Form>
               </>
             )}
-
-
-            <h5>
-              {/* Didn't get confirmation link? */}
-            </h5>
 
             <p className="text-center">Or Sign in with social media</p>
             <Button variant="outline-danger" className="pt-2 pb-2" block>
