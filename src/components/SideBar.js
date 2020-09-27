@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Nav } from "react-bootstrap";
 import { HiUserCircle } from 'react-icons/hi';
 import { MdDashboard } from 'react-icons/md';
-import { VscRequestChanges, VscCalendar, VscHistory } from 'react-icons/vsc';
+import { VscRequestChanges, VscCalendar } from 'react-icons/vsc';
 import { RiBankCardLine } from 'react-icons/ri';
 import { GiWaterDrop } from 'react-icons/gi';
 import { BiDonateBlood, BiPowerOff } from 'react-icons/bi';
 import { GrConnectivity } from 'react-icons/gr';
 import './sidebar.css'
 import { Link } from 'react-router-dom';
+import { SET_SIDEBAR } from '../store/types/sideBarTypes';
 
 const SideBar = () => {
 
@@ -17,6 +18,7 @@ const SideBar = () => {
   }, [])
 
   const { email, firstname, lastname } = useSelector(state => state.auth.user);
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -34,10 +36,9 @@ const SideBar = () => {
       </div>
       <Nav  className="navs">
 
-        <Nav.Link as={Link} exact="true" to="/dashboard" className=""><MdDashboard className="mr-4" size="1.5rem"/>Dashboard</Nav.Link>
-        <Nav.Link eventKey="link-1"><VscRequestChanges className="mr-4" size="1.5rem"/>Requests</Nav.Link>
-        <Nav.Link as={Link} exact="true" to="/appointments" eventKey="link-2"><VscCalendar className="mr-4" size="1.5rem"/>Appointments</Nav.Link>
-        <Nav.Link eventKey="link-2"><VscHistory className="mr-4" size="1.5rem"/>History</Nav.Link>
+        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/dashboard" className=""><MdDashboard className="mr-4" size="1.5rem"/>Dashboard</Nav.Link>
+        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/requests" eventKey="link-1"><VscRequestChanges className="mr-4" size="1.5rem"/>Requests</Nav.Link>
+        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/appointments" eventKey="link-2"><VscCalendar className="mr-4" size="1.5rem"/>Appointments</Nav.Link>
 
         <div className="bg-danger w-75 mb-3 mt-1 mx-auto" style={{height: '0.1rem', opacity: '0.3'}}></div>
 
@@ -48,7 +49,7 @@ const SideBar = () => {
 
         <div className="bg-danger w-75 mb-3 mt-1 mx-auto" style={{height: '0.1rem', opacity: '0.3'}}></div>
 
-        <Nav.Link eventKey="link-2"><BiPowerOff className="mr-4" size="1.5rem"/>logout</Nav.Link>
+        <Nav.Link eventKey="link-2" as={Link} to="/logout"><BiPowerOff className="mr-4" size="1.5rem"/>logout</Nav.Link>
       </Nav>
     </>
   )

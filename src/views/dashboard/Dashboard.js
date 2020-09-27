@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Row, Col, Card, Button, Table, ProgressBar } from "react-bootstrap";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import { GiWaterDrop } from 'react-icons/gi';
 import { VscRequestChanges } from 'react-icons/vsc';
 import './dashboard.css'
@@ -9,6 +9,7 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import { AppointmentHistory } from "../../components";
 
 // Animation
 // import { easeQuadInOut } from "d3-ease";
@@ -18,7 +19,7 @@ import { Link } from "react-router-dom";
 // Radial separators
 // import RadialSeparators from "./RadialSeparators";
 
-const percentage = 66;
+const percentage = 50;
 
 const Dashboard = () => {
 
@@ -29,97 +30,110 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <h1 className="display-4 mb-4">Dashboard</h1>
-      <Row>
-        <Col xs="12" md="4">
-          <Card className="statistics-box blood-group bg-danger text-white text-center">
+      <Row className="mb-1">
+        <Col xs="12" md="6" lg="3">
+          <Card className="statistics-box blood-group">
             <Card.Body>
-              <h5>Blood Group</h5>
-              <div className="group">
-                <span className="display-4 my-auto">A+</span>
+              <div className="d-flex justify-content-between">
+                <div className="icon-box bg-danger d-flex">
+                  <GiWaterDrop className="my-auto mx-auto" color="white" size="3rem"/>
+                </div>
+                <div className="text-right">
+                  <h6 className="text-muted">Group</h6>
+                  <h3>A+</h3>
+                </div>
               </div>
-              <p className="mt-2 mb-0">Confirmed at EKO Hospital</p>
+              <hr/>
+              <div className="d-flex justify-content-between align-items-center">
+                <small>Your Blood Group</small>
+                <Button variant="danger" as={Link} to="/appointments/book" size="sm">
+                  Update
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         </Col>
-        <Col xs="12" md="4">
-          <Card className="statistics-box donation text-center text-danger">
-            <Card.Body className="d-flex justify-content-around">
-              <Button variant="outline-danger" as={Link} to="/appointments/book" className="p-3 w-50 mr-4 text-center">
-                <GiWaterDrop className="my-auto mx-auto" size="6rem"/><br/>
-                DONATE NOW
-              </Button>
-              <Button variant="outline-danger" className="p-3 w-50 text-center">
-                <VscRequestChanges className="my-auto mx-auto" size="6rem"/><br/>
-                RECEIVE
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs="12" md="4">
-          <Card className="statistics-box text-center">
+        <Col xs="12" md="6" lg="3">
+          <Card className="statistics-box blood-group">
             <Card.Body>
-              <h5>Donation Progress</h5>
-              <div style={{width: '27%'}} className="mx-auto">
-                <CircularProgressbar
-                  value={percentage}
-                  // styles={{color: 'red'}}
-                  text={`${percentage}%`}
-                  styles={buildStyles({
-                    textColor: "red",
-                    pathColor: "red",
-                    trailColor: "grey"
-                  })}
-                />
+              <div className="d-flex justify-content-between">
+                <div className="icon-box bg-danger d-flex">
+                  <VscRequestChanges className="my-auto mx-auto" color="white" size="3rem"/>
+                </div>
+                <div className="text-right">
+                  <h6 className="text-muted">Donated</h6>
+                  <h3>12</h3>
+                </div>
+              </div>
+              <hr/>
+              <div className="d-flex justify-content-between align-items-center">
+                <small>Your Total Donation</small>
+                <Button variant="danger" as={Link} to="/requests" size="sm">
+                  Donate
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs="12" md="6" lg="3">
+          <Card className="statistics-box blood-group">
+            <Card.Body>
+              <div className="d-flex justify-content-between">
+                <div className="icon-box bg-danger d-flex">
+                  <GiWaterDrop className="my-auto mx-auto" color="white" size="3rem"/>
+                </div>
+                <div className="text-right">
+                  <h6 className="text-muted">Requests</h6>
+                  <h3>5</h3>
+                </div>
+              </div>
+              <hr/>
+              <div className="d-flex justify-content-between align-items-center">
+                <small>Your Total Requests</small>
+                <Button variant="danger" size="sm">
+                  Request
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs="12" md="6" lg="3">
+          <Card className="statistics-box blood-group">
+            <Card.Body>
+              <div className="d-flex justify-content-between">
+                <div className="icon-box bg-danger p-3">
+                  <div style={{width: '100%'}} className="mx-auto">
+                  <CircularProgressbar
+                    value={percentage}
+                    // styles={{color: 'red'}}
+                    text={`${percentage}%`}
+                    styles={buildStyles({
+                      textColor: "white",
+                      pathColor: "white",
+                      trailColor: "yellow"
+                    })}
+                  />
+                </div>
+                </div>
+                <div className="text-right">
+                  <h6 className="text-muted">Progress</h6>
+                  <h3>50%</h3>
+                </div>
+              </div>
+              <hr/>
+              <div className="d-flex justify-content-between align-items-center">
+                <small>Your Last Donation</small>
+                <Button variant="danger" as={Link} to="/appointments/book" size="sm">
+                  Details
+                </Button>
               </div>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <Row>
-        <Col className="mt-5">
-          <Card>
-            <Card.Body>
-              <h6 className="mb-3">Donation History</h6>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Hospital</th>
-                    <th>Progress</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>July 20th, 2020</td>
-                    <td>Eko Hospital, Ikeja</td>
-                    <td><ProgressBar variant="info" now={66} label='66%' /></td>
-                    <td>+234 802 283 5496</td>
-                    <td>larrysnet2001@gmail.com</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>August 21th, 2020</td>
-                    <td>Eko Hospital, Ikeja</td>
-                    <td><ProgressBar variant="success" now={100} label='100%' /></td>
-                    <td>+234 802 283 5496</td>
-                    <td>larrysnet2001@gmail.com</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Sept 20th, 2020</td>
-                    <td>Eko Hospital, Ikeja</td>
-                    <td><ProgressBar variant="success" now={100} label='100%' /></td>
-                    <td>+234 802 283 5496</td>
-                    <td>larrysnet2001@gmail.com</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
+        <Col className="mt-4">
+          <AppointmentHistory/>
         </Col>
       </Row>
     </div>
