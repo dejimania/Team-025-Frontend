@@ -49,7 +49,12 @@
   z-index: 1;
   font-weight: 200;
   background-size: cover;
+  background-color: white;
   background-position: 50%;
+  -webkit-transition: left .25s ease-out;
+  -moz-transition: left .25s ease-out;
+  -o-transition: left .25s ease-out;
+  transition: left .25s ease-out;
 }
 
 .main-panel {
@@ -65,4 +70,41 @@
 
 .display-4 {
   font-size: 2.5rem;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* @media (max-width: 575.98px) { */
+/* @media (max-width: 767px) { */
+@media (max-width: 992px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -260px;
+    width: 260px;
+    display: block;
+    z-index: 1;
+    font-weight: 200;
+    background-size: cover;
+    background-position: 50%;
+  }
+
+  .main-panel {
+    background: rgba(203,203,210,.15);
+    position: relative;
+    float: right;
+    width: calc(100%);
+    overflow: hidden!important;
+    overflow-anchor: none;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  .show {
+    left: 0px;
+    background-color: white;
+  }
 }

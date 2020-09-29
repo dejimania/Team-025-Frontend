@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Alert } from "react-bootstrap";
+import { useDispatch } from 'react-redux';
 import { Link, NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import illustration from "../../assets/images/undraw_team_work_k80m.svg";
 import logo from '../../assets/images/logo_2.png'
 import "../signup/signup.css";
 import { serverRequest } from "../../utils/serverRequest";
+import { AUTH_CANCELED } from "../../store/types/authTypes";
 
 const ConfirmRegistration = () => {
 
@@ -15,9 +17,12 @@ const ConfirmRegistration = () => {
 
   const { register, handleSubmit } = useForm();
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     window.scrollTo(0,0)
-  }, [])
+    dispatch({type: AUTH_CANCELED})
+  }, [dispatch])
 
   const onSubmit = async data => {
     try {
