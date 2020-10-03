@@ -8,19 +8,19 @@ import unicef from '../assets/images/partners/UNICEF_Logo.png';
 const LandingPartners = () => {
   return (
     <div className="bg-danger text-white text-center pt-5 pb-5" style={{backgroundColor: 'coral'}}>
-      <Container className="pt-5 pb-5">
+      <Container className="pt-3 pb-3">
         <Row>
-          <Col xs="12" md="3">
-            <img src={fb} width="200" alt="Facebook"/>
+          <Col xs="12" md="6" lg="3">
+            <img src={fb} width="200" className="m-4" alt="Facebook"/>
           </Col>
-          <Col xs="12" md="3">
-            <img src={andela} width="200" alt="Andela"/>
+          <Col xs="12" md="6" lg="3">
+            <img src={andela} width="200" className="m-4"  alt="Andela"/>
           </Col>
-          <Col xs="12" md="3">
-            <img src={who} width="200" alt="WHO"/>
+          <Col xs="12" md="6" lg="3">
+            <img src={who} width="200" className="m-4"  alt="WHO"/>
           </Col>
-          <Col xs="12" md="3">
-            <img src={unicef} width="200" alt="Unicef"/>
+          <Col xs="12" md="6" lg="3">
+            <img src={unicef} width="200" className="m-4"  alt="Unicef"/>
           </Col>
         </Row>
       </Container>

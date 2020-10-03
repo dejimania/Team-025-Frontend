@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row, Form, Button, Alert, Spinner } from 'react-bootstrap'
 import { AppointmentHistory } from '../../components'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { serverRequest } from "../../utils/serverRequest";
 import { useHistory } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import ngStatesObject from "../../utils/ngStatesObject";
-import "react-datepicker/dist/react-datepicker.css";
+import { SET_ERROR, SET_SUCCESS } from "../../store/types/notificationTypes";
 
-const BookAppointment = () => {
+const BookRequest = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState();
   const [loadingHospitals, setLoadingHospitals] = useState(false);
   const [hospitals, setHospitals] = useState([]);
-  const [date, setDate] = useState(new Date());
 
   const { register, handleSubmit, watch } = useForm();
 
   const { push } = useHistory();
+  const dispatch = useDispatch();
 
-  const { token } = useSelector(state => state.auth);
+  const { token, user } = useSelector(state => state.auth);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,17 +28,20 @@ const BookAppointment = () => {
 
   const onSubmit = async (data) => {
     try {
-      data['date'] = date;
+      data['bloodReceiverId'] = user._id;
+      data['bloodGroup'] = user.bloodGroup;
       setIsSubmitting(true);
-      const endpoint = `${process.env.REACT_APP_API}/donation/history`;
+      const endpoint = `${process.env.REACT_APP_API}/request`;
       const response = await serverRequest(token).post(endpoint, data);
       if (response.data.status === "success") {
         setIsSubmitting(false);
-        push('/appointments')
+        dispatch({ type: SET_SUCCESS, payload: "Successful, Profile Updated" });
+        push('/requests')
       }
     } catch (error) {
       setError(error.response.data.message || error.response.data.error);
       setIsSubmitting(false);
+      dispatch({ type: SET_ERROR, payload: error });
     }
   };
 
@@ -60,14 +62,14 @@ const BookAppointment = () => {
 
   return (
     <div>
-      <h1 className="display-4 mb-4">Donate to Bank</h1>
+      <h1 className="display-4 mb-4">Make a Request</h1>
       <Row>
-        <Col xs="12" md="6">
+        <Col xs="12" lg="6" md="12">
           <Card>
             <Card.Body>
-              <h6>Book a new Appointment</h6>
+              <h6>Book a new Blood Request</h6>
               <p className="text-danger">
-              Please complete the form to start your donation
+              Please complete the form to start your donation request
             </p>
             <Form onSubmit={handleSubmit(onSubmit)}>
 
@@ -101,30 +103,14 @@ const BookAppointment = () => {
                 </Form.Group>
               ):null}
 
-              <Form.Group className="w-100">
-                <Form.Label>Appointment Date</Form.Label><br/>
-                <DatePicker
-                  name="date"
-                  selected={date}
-                  required
-                  onChange={date => setDate(date)}
-                  timeIntervals={15}
-                  minDate={new Date()}
-                  // ref={register({ required: true })}
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  showTimeSelect
-                  className="p-1 form-control pt-4 pb-4 w-100 pl-3"
-                />
-              </Form.Group>
-
               <Form.Group>
-                <Form.Control type="text" placeholder="Comment" name="comment" ref={register({ required: true })} className="pt-4 pb-4" />
+                <Form.Control type="text" placeholder="Comment" name="comments" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <input type="hidden" name="type" defaultValue="bank" ref={register({ required: true })} />
 
               <Button variant="danger" type="submit" disabled={isSubmitting} className="mb-3 pt-2 pb-2" block>
-                {isSubmitting ? "Loading..." : "Book Now"}
+                {isSubmitting ? "Loading..." : "Request Now"}
               </Button>
               {error ? (
                 <Alert variant="warning" className="text-center">
@@ -135,7 +121,7 @@ const BookAppointment = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col xs="12" md="6">
+        <Col xs="12" md="12" lg="6" className="mt-5 mt-lg-0">
           <AppointmentHistory/>
         </Col>
       </Row>
@@ -143,5 +129,5 @@ const BookAppointment = () => {
   )
 }
 
-export default BookAppointment
+export default BookRequest
 
