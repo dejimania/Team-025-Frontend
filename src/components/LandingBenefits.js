@@ -12,8 +12,9 @@ const LandingBenefits = () => {
           <Col className="text-center">
             <h2 className="mt-5 display-4">Donation with benefits</h2>
             <p>
-              Insights from Google Cloud executives, focusing on transformational efforts across industries working with customers and ecosystem partners.
-              Insights from Google Cloud executives, focusing on transformational efforts across industries working with customers and ecosystem partners.
+              Blood donors are grouped into voluntary donors and beneficiaries.
+              The safest of these is the voluntary donor blood. Blood banking is highly regulated to ensure both donor and recipient safety.
+              The goal of blood banking is to provide adequate and safe blood to recipients at no risk to donors.
             </p>
             <div className="ruler mb-5"></div>
           </Col>
