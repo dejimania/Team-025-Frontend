@@ -16,7 +16,12 @@ import { serverRequest } from "../../utils/serverRequest";
 
 const Dashboard = () => {
 
-  const [statistics, setStatistics] = useState();
+  const [statistics, setStatistics] = useState({
+    bloodGroup: "--",
+    donations: "--",
+    lastDonation: { progress: "--"},
+    requests: "--"
+  });
 
   const { token } = useSelector(state => state.auth);
 
@@ -111,9 +116,9 @@ const Dashboard = () => {
                 <div className="icon-box bg-danger p-3">
                   <div style={{width: '100%'}} className="mx-auto">
                   <CircularProgressbar
-                    value={statistics && statistics.lastDonation.progress}
+                    value={statistics && statistics.lastDonation && statistics.lastDonation.progress}
                     // styles={{color: 'red'}}
-                    text={`${statistics && statistics.lastDonation.progress}%`}
+                    text={`${statistics && statistics.lastDonation && statistics.lastDonation.progress}%`}
                     styles={buildStyles({
                       textColor: "white",
                       pathColor: "white",
@@ -124,7 +129,7 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Progress</h6>
-                  <h3>{statistics && statistics.lastDonation.progress}%</h3>
+                  <h3>{statistics && statistics.lastDonation && statistics.lastDonation.progress}%</h3>
                 </div>
               </div>
               <hr/>
@@ -148,4 +153,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
