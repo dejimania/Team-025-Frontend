@@ -31,11 +31,11 @@ const BookAppointment = () => {
     try {
       data['date'] = date;
       setIsSubmitting(true);
-      const endpoint = `${process.env.REACT_APP_API}/donation/history`;
+      const endpoint = `${process.env.REACT_APP_API}/appointments`;
       const response = await serverRequest(token).post(endpoint, data);
       if (response.data.status === "success") {
         setIsSubmitting(false);
-        push('/appointments')
+        push('/donation/history')
       }
     } catch (error) {
       setError(error.response.data.message || error.response.data.error);
