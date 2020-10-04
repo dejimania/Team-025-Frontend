@@ -58,7 +58,7 @@ const Dashboard = () => {
               <hr/>
               <div className="d-flex justify-content-between align-items-center">
                 <small>Your Blood Group</small>
-                <Button variant="danger" as={Link} to="/donation/book" size="sm">
+                <Button variant="danger" as={Link} to="/profile" size="sm">
                   Update
                 </Button>
               </div>
