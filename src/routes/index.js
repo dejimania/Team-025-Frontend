@@ -14,9 +14,14 @@ import { Dashboard } from '../views/dashboard'
 import UserLayout from '../layouts/UserLayout';
 import { LogOut } from '../views/logout';
 import { BookAppointment } from '../views/bookappointment';
-import { Appointments } from '../views/appointments';
+import { Appointments } from '../views/donations';
 import { Requests } from '../views/requests';
-import { Appointment } from '../views/appointment';
+import { Appointment } from '../views/donation';
+import { Donates } from '../views/donate';
+import { Profile } from '../views/profile';
+import { BookRequest } from '../views/bookrequest';
+import { Request } from '../views/request';
+import { AcceptRequest } from '../views/acceptrequest';
 
 const Routes = () => {
 	return (
@@ -29,10 +34,15 @@ const Routes = () => {
 				<PublicRoutes exact={true} layout={AuthLayout} path="/verification/:code" component={Verification}/>
 				<PublicRoutes exact={true} layout={DefaultLayout} path="/" component={Home}/>
         <PrivateRoutes exact={true} layout={UserLayout} path="/dashboard" component={Dashboard}/>
-        <PrivateRoutes exact={true} layout={UserLayout} path="/appointments/book" component={BookAppointment}/>
-        <PrivateRoutes exact={true} layout={UserLayout} path="/appointments" component={Appointments}/>
-        <PrivateRoutes exact={true} layout={UserLayout} path="/appointments/:appointmentId" component={Appointment}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/donation" component={Donates}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/donation/book" component={BookAppointment}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/donation/history" component={Appointments}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/donation/:appointmentId" component={Appointment}/>
 				<PublicRoutes exact={true} layout={UserLayout} path="/requests" component={Requests}/>
+				<PublicRoutes exact={true} layout={UserLayout} path="/requests/book" component={BookRequest}/>
+				<PublicRoutes exact={true} layout={UserLayout} path="/requests/accept/:requestId" component={AcceptRequest}/>
+				<PublicRoutes exact={true} layout={UserLayout} path="/requests/:requestId" component={Request}/>
+        <PrivateRoutes exact={true} layout={UserLayout} path="/profile" component={Profile}/>
         <PrivateRoutes exact={true} layout={UserLayout} path="/logout" component={LogOut}/>
 			</Switch>
 		</Suspense>

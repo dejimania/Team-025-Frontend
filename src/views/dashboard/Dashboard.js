@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { GiWaterDrop } from 'react-icons/gi';
 import { VscRequestChanges } from 'react-icons/vsc';
+import { useSelector } from 'react-redux';
+
 import './dashboard.css'
 import {
   CircularProgressbar,
@@ -10,22 +12,27 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import { AppointmentHistory } from "../../components";
-
-// Animation
-// import { easeQuadInOut } from "d3-ease";
-// import AnimatedProgressProvider from "./AnimatedProgressProvider";
-// import ChangingProgressProvider from "./ChangingProgressProvider";
-
-// Radial separators
-// import RadialSeparators from "./RadialSeparators";
-
-const percentage = 50;
+import { serverRequest } from "../../utils/serverRequest";
 
 const Dashboard = () => {
 
+  const [statistics, setStatistics] = useState();
+
+  const { token } = useSelector(state => state.auth);
+
   useEffect(() => {
     window.scrollTo(0,0)
-  }, [])
+    const getStatistics = async () => {
+      try {
+        const endpoint = `${process.env.REACT_APP_API}/users/statistics`;
+        const response = await serverRequest(token).get(endpoint);
+        setStatistics(response.data.data)
+      } catch (error) {
+
+      }
+    };
+    getStatistics();
+  }, [token])
 
   return (
     <div className="dashboard">
@@ -40,13 +47,13 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Group</h6>
-                  <h3>A+</h3>
+                  <h3>{statistics && statistics.bloodGroup}</h3>
                 </div>
               </div>
               <hr/>
               <div className="d-flex justify-content-between align-items-center">
                 <small>Your Blood Group</small>
-                <Button variant="danger" as={Link} to="/appointments/book" size="sm">
+                <Button variant="danger" as={Link} to="/donation/book" size="sm">
                   Update
                 </Button>
               </div>
@@ -62,13 +69,13 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Donated</h6>
-                  <h3>12</h3>
+                  <h3>{statistics && statistics.donations}</h3>
                 </div>
               </div>
               <hr/>
               <div className="d-flex justify-content-between align-items-center">
                 <small>Your Total Donation</small>
-                <Button variant="danger" as={Link} to="/requests" size="sm">
+                <Button variant="danger" as={Link} to="/donation" size="sm">
                   Donate
                 </Button>
               </div>
@@ -84,7 +91,7 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Requests</h6>
-                  <h3>5</h3>
+                  <h3>{statistics && statistics.requests}</h3>
                 </div>
               </div>
               <hr/>
@@ -104,9 +111,9 @@ const Dashboard = () => {
                 <div className="icon-box bg-danger p-3">
                   <div style={{width: '100%'}} className="mx-auto">
                   <CircularProgressbar
-                    value={percentage}
+                    value={statistics && statistics.lastDonation.progress}
                     // styles={{color: 'red'}}
-                    text={`${percentage}%`}
+                    text={`${statistics && statistics.lastDonation.progress}%`}
                     styles={buildStyles({
                       textColor: "white",
                       pathColor: "white",
@@ -117,13 +124,13 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Progress</h6>
-                  <h3>50%</h3>
+                  <h3>{statistics && statistics.lastDonation.progress}%</h3>
                 </div>
               </div>
               <hr/>
               <div className="d-flex justify-content-between align-items-center">
                 <small>Your Last Donation</small>
-                <Button variant="danger" as={Link} to="/appointments/book" size="sm">
+                <Button variant="danger" as={Link} to={`/donation/${statistics && statistics.lastDonation._id}`} size="sm">
                   Details
                 </Button>
               </div>

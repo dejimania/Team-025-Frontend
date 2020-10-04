@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import { Badge } from 'react-bootstrap';
+import React from 'react'
 
 export const currencyFormat = (amount) => {
   if(!amount) return '₦' + 0.00;
@@ -28,6 +30,15 @@ export const formatDateWithTime2 = (date) => {
 
 export const formatDateWithTime3 = (date) => {
   return dayjs(date).format('YYYY-MM-DD, HH:mm:ss');
+}
+
+export const status = (value) => {
+  switch (value) {
+    case 'PENDING':
+      return (<Badge pill variant="secondary">Pending</Badge>)
+    default:
+      return (<Badge pill variant="secondary">Pending</Badge>)
+  }
 }
 
 // export const regPatterns = {

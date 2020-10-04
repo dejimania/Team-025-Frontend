@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { SideBar, TopBar } from "../components";
+import NotificationBar from "../components/NotificationBar";
 import './userlayout.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserLayout = ({ children }) => {
 
@@ -14,6 +16,7 @@ const UserLayout = ({ children }) => {
       </div>
       <div className="main-panel">
         <TopBar/>
+        <NotificationBar/>
         <div style={{ minHeight: "100vh" }}>{children}</div>
       </div>
     </div>

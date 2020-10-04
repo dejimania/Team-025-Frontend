@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Badge } from "react-bootstrap";
 import { useDispatch } from 'react-redux';
 import { HiUserCircle } from 'react-icons/hi';
 import { MdDashboard, MdNotificationsNone } from 'react-icons/md';
@@ -19,8 +19,9 @@ const TopBar = () => {
         </Nav>
         <div className="ml-auto d-flex align-items-center">
           <MdNotificationsNone size="2rem"/>
+          <sup><Badge className="p-1" pill style={{fontSize: '1rem'}} variant="danger">9</Badge></sup>
           <NavDropdown  title={<HiUserCircle className="" size="2rem"/>}>
-            <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+            <NavDropdown.Item  as={Link} to="/profile">Profile</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">Notifications</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Get Help</NavDropdown.Item>
             <NavDropdown.Divider />

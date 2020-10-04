@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { HiUserCircle } from 'react-icons/hi';
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, NavLink, useHistory } from "react-router-dom";
-import logo from "../../assets/images/logo_2.png";
-import illustration from "../../assets/images/undraw_team_work_k80m.svg";
-import { AUTH_PROFILE_RESOLVED } from "../../store/types/authTypes";
-import { SET_ERROR, SET_SUCCESS } from "../../store/types/notificationTypes";
-import { serverRequest } from "../../utils/serverRequest";
+import { Button, Card, Col, Row, Form, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { formatDateWithTime } from '../../utils/helpers';
+import { serverRequest } from '../../utils/serverRequest';
 import ngStatesObject from '../../utils/ngStatesObject';
+import { AUTH_PROFILE_RESOLVED } from '../../store/types/authTypes';
 
-import "../signup/signup.css";
+const Profile = () => {
 
-const CompleteRegistration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState();
   const [success, setSuccess] = useState(false);
 
-  const { push } = useHistory();
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, watch } = useForm();
   const { user, token } = useSelector(state => state.auth);
+  const { email, firstname, lastname, phone, address, bloodGroup, createdAt, emailVerifiedAt, state, lg } = user;
+  const { register, handleSubmit, watch } = useForm();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0,0)
+  }, [])
 
   const onSubmit = async (data) => {
     try {
@@ -38,42 +36,53 @@ const CompleteRegistration = () => {
         setIsSubmitting(false);
         //dispatch to update user profile in store
         dispatch({ type: AUTH_PROFILE_RESOLVED, payload: response.data.data})
-        dispatch({ type: SET_SUCCESS, payload: "Successful, Profile Updated" });
-        push('/dashboard');
       }
     } catch (error) {
       setError(error.response.data.message || error.response.data.error);
-      dispatch({ type: SET_ERROR, payload: error });
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Container fluid className="h-100 auth-container">
-      <Row className="h-100">
-        <Col md="6" className="pt-5">
-          <div className="auth-box mx-auto">
-            <Link to="/">
-              <img src={logo} alt="bloodnation logo" className="img-fluid mb-5" />
-            </Link>
-            <h2 className="display-4">
-              Complete <br />
-              Registration
-            </h2>
+    <div>
+      <h1 className="display-4 mb-4">Profile</h1>
+      <Row>
+        <Col xs="12" md="3">
+          <Card>
+            <Card.Body className="bg-danger text-center">
+              <HiUserCircle size="17rem" className="mx-auto" color="white"/>
+              <h3 className="my-auto text-white" style={{overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+                {firstname} {lastname || 'Welcome'} <br/>
+                <small>{email}</small>
+              </h3>
+            </Card.Body>
+          </Card>
+          <div className="p-3">
+            <h6>Phone: {phone}</h6>
+            <h6>State: {state}</h6>
+            <h6>Local Government: {lg}</h6>
+            <h6>Address: {address}</h6>
+            <h6>Registered At: {formatDateWithTime(createdAt)}</h6>
+            <h6>Verified At: {formatDateWithTime(emailVerifiedAt)}</h6>
+            <h6>Blood Group: {bloodGroup}</h6>
+          </div>
+        </Col>
+        <Col md="6" className="">
+          <div className="mx-auto">
             <p className="text-danger">
-              Please complete this last step to get started with bloodnation
+              Use the form below to update your profile
             </p>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group>
-                <Form.Control type="text" placeholder="Firstname" name="firstname" ref={register({ required: true })} className="pt-4 pb-4" />
+                <Form.Control type="text" placeholder="Firstname" defaultValue={user.firstname} name="firstname" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group>
-                <Form.Control type="text" placeholder="Lastname" name="lastname" ref={register({ required: true })} className="pt-4 pb-4" />
+                <Form.Control type="text" placeholder="Lastname" defaultValue={user.lastname} name="lastname" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group>
-                <Form.Control type="tel" placeholder="+234..." name="phone" ref={register({ required: true })} className="pt-4 pb-4" />
+                <Form.Control type="tel" placeholder="+234..." defaultValue={user.phone} name="phone" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group>
@@ -83,22 +92,22 @@ const CompleteRegistration = () => {
                 </Form.Control>
               </Form.Group>
 
-              {watch('state')?(
+              {/* {user.state || watch('state')?( */}
                 <Form.Group>
                   <Form.Control name="lg" defaultValue={user.lg} required ref={register({ required: true })} as="select" style={{height: '50px'}} custom>
                     <option value="">- Pick a Local Government -</option>
-                    {ngStatesObject && ngStatesObject[watch('state')].locals.map((lg, index) => <option key={index} value={lg.name}>{lg.name}</option>)}
+                    {ngStatesObject && ngStatesObject[user.state || watch('state')].locals.map((lg, index) => <option key={index} value={lg.name}>{lg.name}</option>)}
                   </Form.Control>
                 </Form.Group>
-               ):null}
+              {/* ):null} */}
 
               <Form.Group>
-                <Form.Control type="text" placeholder="address" name="address" ref={register({ required: true })} className="pt-4 pb-4" />
+                <Form.Control type="text" placeholder="address" defaultValue={user.address} name="address" ref={register({ required: true })} className="pt-4 pb-4" />
               </Form.Group>
 
               <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Blood Group</Form.Label>
-                <Form.Control name="bloodGroup" ref={register({ required: true })} as="select" style={{height: '50px'}} custom>
+                <Form.Control name="bloodGroup" defaultValue={user.bloodGroup} ref={register({ required: true })} as="select" style={{height: '50px'}} custom>
                   <option value="">- Pick a Blood Group -</option>
                   <option value="A+">A RhD positive (A+)</option>
                   <option value="A-">A RhD negative (A-)</option>
@@ -112,7 +121,7 @@ const CompleteRegistration = () => {
               </Form.Group>
 
               <Button variant="danger" type="submit" disabled={isSubmitting} className="mb-3 pt-2 pb-2" block>
-                {isSubmitting ? "Loading..." : "Complete"}
+                {isSubmitting ? "Loading..." : "Update"}
               </Button>
               {error ? (
                 <Alert variant="warning" className="text-center">
@@ -121,7 +130,7 @@ const CompleteRegistration = () => {
               ) : null}
               {success ? (
                 <Alert variant="info" className="text-center">
-                  Successfully completed registration. <br/>
+                  Successfully updated profile. <br/>
                   <Button variant="outline-danger" as={Link} to="/dashboard" type="button" className="mb-3 pt-2 pb-2 mt-3" block>
                     Go Dashboard
                   </Button>
@@ -130,27 +139,9 @@ const CompleteRegistration = () => {
             </Form>
           </div>
         </Col>
-        <Col md="6" className="text-white text-center d-flex signup-red-box">
-          <div className="signupbox one d-none d-md-block"></div>
-          <div className="signupbox two d-none d-md-block"></div>
-          <div className="signupbox five"></div>
-          <div className="signupbox six"></div>
-          <div className="signup-illustration-box my-auto mx-auto pt-3 pb-5">
-            <h1 className="display-4 mt-4 mb-3">
-              Complete Registration <br /> to start Donating
-            </h1>
-            <img src={illustration} className="img-fluid illustration mb-3" alt="sign up" />
-            <p className="mb-4 text-white">Give blood, do something amazing and save lives</p>
-            <hr className="border" />
-            <h5 className="mt-4">Need help?</h5>
-            <Button variant="light" as={NavLink} to="/contact" className="mb-3 pt-2 pb-2" block>
-              Contact Us
-            </Button>
-          </div>
-        </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
-export default CompleteRegistration;
+export default Profile;

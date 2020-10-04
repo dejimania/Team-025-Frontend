@@ -6,8 +6,8 @@ import { MdDashboard } from 'react-icons/md';
 import { VscRequestChanges, VscCalendar } from 'react-icons/vsc';
 import { RiBankCardLine } from 'react-icons/ri';
 import { GiWaterDrop } from 'react-icons/gi';
-import { BiDonateBlood, BiPowerOff } from 'react-icons/bi';
-import { GrConnectivity } from 'react-icons/gr';
+import {  BiPowerOff } from 'react-icons/bi';
+// import { GrConnectivity } from 'react-icons/gr';
 import './sidebar.css'
 import { Link } from 'react-router-dom';
 import { SET_SIDEBAR } from '../store/types/sideBarTypes';
@@ -37,15 +37,15 @@ const SideBar = () => {
       <Nav  className="navs">
 
         <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/dashboard" className=""><MdDashboard className="mr-4" size="1.5rem"/>Dashboard</Nav.Link>
+        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/donation" eventKey="link-1"><GiWaterDrop className="mr-4" size="1.5rem"/>Donate</Nav.Link>
         <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/requests" eventKey="link-1"><VscRequestChanges className="mr-4" size="1.5rem"/>Requests</Nav.Link>
-        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/appointments" eventKey="link-2"><VscCalendar className="mr-4" size="1.5rem"/>Appointments</Nav.Link>
+        <Nav.Link as={Link} onClick={()=> dispatch({type: SET_SIDEBAR})} exact="true" to="/donation/history" eventKey="link-2"><VscCalendar className="mr-4" size="1.5rem"/>Donation History</Nav.Link>
 
         <div className="bg-danger w-75 mb-3 mt-1 mx-auto" style={{height: '0.1rem', opacity: '0.3'}}></div>
 
         <Nav.Link eventKey="link-2"><RiBankCardLine className="mr-4" size="1.5rem"/>Banks</Nav.Link>
-        <Nav.Link eventKey="link-2"><GiWaterDrop className="mr-4" size="1.5rem"/>Centers</Nav.Link>
-        <Nav.Link eventKey="link-2"><BiDonateBlood className="mr-4" size="1.5rem"/>Donors</Nav.Link>
-        <Nav.Link eventKey="link-2"><GrConnectivity className="mr-4" size="1.5rem"/>Matches</Nav.Link>
+        <Nav.Link eventKey="link-2"  as={Link} to="/profile"><RiBankCardLine className="mr-4" size="1.5rem"/>Profile</Nav.Link>
+        <Nav.Link eventKey="link-2"><GiWaterDrop className="mr-4" size="1.5rem"/>Get Help</Nav.Link>
 
         <div className="bg-danger w-75 mb-3 mt-1 mx-auto" style={{height: '0.1rem', opacity: '0.3'}}></div>
 

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import useAppointments from '../hooks/useAppointments';
 import { formatDateWithTime } from '../utils/helpers';
 
-function AppointmentHistory() {
+function DonationHistory() {
 
   const { isLoading, appointments } = useAppointments();
 
@@ -15,15 +15,15 @@ function AppointmentHistory() {
     <div>
       <Card>
         <Card.Body>
-          <Button variant="danger" as={Link} to="/requests" className="mb-3">
+          <Button variant="danger" as={Link} to="/donation" className="mb-3">
             Donate
           </Button>
-          <h6 className="mb-3">Appointment History</h6>
+          <h6 className="mb-3">Donation History</h6>
           <Table striped bordered hover responsive>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Date</th>
+                <th>Appointment Date</th>
                 <th>For</th>
                 <th>Status</th>
                 <th>Hospital</th>
@@ -52,15 +52,15 @@ function AppointmentHistory() {
                           <td className="text-capitalize">{appointment.type}</td>
                           <td className="text-capitalize">{appointment.status}</td>
                           <td>{appointment.hospital.name}</td>
-                          <td className="d-none d-md-table-cell"><ProgressBar variant="info" now={appointment.progress} label={appointment.progress} /></td>
+                          <td className="d-none d-md-table-cell"><ProgressBar variant="danger" now={appointment.progress} label={appointment.progress} /></td>
                           <td className="d-none d-md-table-cell">{appointment.hospital.phone}</td>
-                          <td width="50"><Button className="" as={Link} to={`/appointments/${appointment._id}`} variant="danger">View</Button></td>
+                          <td width="50"><Button className="" as={Link} to={`/donation/${appointment._id}`} size="sm" variant="danger">More</Button></td>
                         </tr>
                       ))}
                     </>
                   ):(
                     <tr>
-                      <td colSpan="5">No Appointment</td>
+                      <td colSpan="8">No Appointment</td>
                     </tr>
                   )}
                 </>
@@ -73,5 +73,5 @@ function AppointmentHistory() {
   )
 }
 
-export default AppointmentHistory
+export default DonationHistory
 
