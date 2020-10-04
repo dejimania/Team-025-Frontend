@@ -116,9 +116,9 @@ const Dashboard = () => {
                 <div className="icon-box bg-danger p-3">
                   <div style={{width: '100%'}} className="mx-auto">
                   <CircularProgressbar
-                    value={statistics && statistics.lastDonation && statistics.lastDonation.progress}
+                    value={(statistics && statistics.lastDonation && statistics.lastDonation.progress) || "--"}
                     // styles={{color: 'red'}}
-                    text={`${statistics && statistics.lastDonation && statistics.lastDonation.progress}%`}
+                    text={`${(statistics && statistics.lastDonation && statistics.lastDonation.progress) || "--"}%`}
                     styles={buildStyles({
                       textColor: "white",
                       pathColor: "white",
@@ -129,13 +129,13 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right">
                   <h6 className="text-muted">Progress</h6>
-                  <h3>{statistics && statistics.lastDonation && statistics.lastDonation.progress}%</h3>
+                  <h3>{statistics && statistics.lastDonation && statistics.lastDonation.progress?statistics.lastDonation.progress+"%": "None"}</h3>
                 </div>
               </div>
               <hr/>
               <div className="d-flex justify-content-between align-items-center">
                 <small>Your Last Donation</small>
-                <Button variant="danger" as={Link} to={`/donation/${statistics && statistics.lastDonation._id}`} size="sm">
+                <Button variant="danger" as={Link} to={`/donation/${(statistics && statistics.lastDonation && statistics.lastDonation._id) || ''}`} size="sm">
                   Details
                 </Button>
               </div>
